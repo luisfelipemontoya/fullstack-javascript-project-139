@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import authApi from '../api/auth';
 
 function LoginPage() {
     const navigate = useNavigate();
+    const [authError, setAuthError] = useState(false);
 
     return (
         <>
@@ -15,11 +17,16 @@ function LoginPage() {
                     password: '',
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    console.log(values)
+                    setAuthError(false);
+
                     authApi.login(values)
                         .then((data) => {
                             localStorage.setItem('token', data.token);
                             navigate('/');
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            setAuthError(true);
                         })
                         .finally(() => {
                             setSubmitting(false);
@@ -41,13 +48,18 @@ function LoginPage() {
                         <Field
                             id="password"
                             name="password"
-                            type="text"
+                            type="password"
                         />
                     </div>
 
                     <button type="submit">
                         Entrar
                     </button>
+                    {authError && (
+                        <div style={{ color: 'red' }}>
+                            Usuario o contraseña incorrectos
+                        </div>
+                    )}
                 </Form>
             </Formik>
         </>
