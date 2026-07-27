@@ -15,6 +15,7 @@ function LoginPage() {
                     password: '',
                 }}
                 onSubmit={(values, { setSubmitting }) => {
+                    console.log(values)
                     authApi.login(values)
                         .then((data) => {
                             localStorage.setItem('token', data.token);
@@ -40,7 +41,7 @@ function LoginPage() {
                         <Field
                             id="password"
                             name="password"
-                            Type="text"
+                            type="text"
                         />
                     </div>
 
