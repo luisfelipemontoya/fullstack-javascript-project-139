@@ -1,6 +1,10 @@
 import { Formik, Form, Field } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import authApi from '../api/auth';
 
 function LoginPage() {
+    const navigate = useNavigate();
+
     return (
         <>
             <h1>Iniciar sesión</h1>
@@ -10,13 +14,20 @@ function LoginPage() {
                     username: '',
                     password: '',
                 }}
-                onSubmit={(values) => {
-                    console.log(values);
+                onSubmit={(values, { setSubmitting }) => {
+                    authApi.login(values)
+                        .then((data) => {
+                            localStorage.setItem('token', data.token);
+                            navigate('/');
+                        })
+                        .finally(() => {
+                            setSubmitting(false);
+                        });
                 }}
             >
                 <Form>
                     <div>
-                        <label htmlFor="password">Usuario</label>
+                        <label htmlFor="username">Usuario</label>
                         <Field
                             id="username"
                             name="username"
