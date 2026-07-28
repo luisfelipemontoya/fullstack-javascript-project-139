@@ -25,7 +25,6 @@ function LoginPage() {
                             navigate('/');
                         })
                         .catch((error) => {
-                            console.log(error);
                             setAuthError(true);
                         })
                         .finally(() => {
