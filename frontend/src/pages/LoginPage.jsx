@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import authApi from '../api/auth';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store/slices/authSlice';
 
 function LoginPage() {
     const navigate = useNavigate();
     const [authError, setAuthError] = useState(false);
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -22,6 +25,9 @@ function LoginPage() {
                     authApi.login(values)
                         .then((data) => {
                             localStorage.setItem('token', data.token);
+
+                            dispatch(setToken(data.token));
+
                             navigate('/');
                         })
                         .catch((error) => {
