@@ -1,3 +1,4 @@
+import './socket/index.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './routes/ProtectedRoute';
 

@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import chatApi from '../api/chat';
+import socket from '../socket';
 
 import { setChannels } from '../store/slices/channelsSlice';
-import { setMessages } from '../store/slices/messagesSlice';
+import { setMessages, addMessage } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 function ChatPage() {
@@ -20,11 +21,21 @@ function ChatPage() {
 
         chatApi.getMessages(token)
             .then((messages) => {
-                console.log(messages);
                 dispatch(setMessages(messages));
             });
 
     }, [dispatch, token]);
+
+    useEffect(() => {
+        socket.on('newMessage', (message) => {
+            console.log('Socket recibió', message);
+            dispatch(addMessage(message));
+        });
+
+        return () => {
+            socket.off('newMessage');
+        };
+    }, [dispatch]);
 
     return (
         <>
@@ -49,6 +60,31 @@ function ChatPage() {
                     </li>
                 ))}
             </ul>
+
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+
+                    const body = e.target.elements.body.value;
+
+                    chatApi.sendMessage(token, {
+                        body,
+                        channelId: '1',
+                    }).then(() => {
+                        e.target.reset();
+                    });
+                }}
+            >
+                <input
+                    type="text"
+                    name="body"
+                    placeholder="Escribe un mensaje..."
+                />
+
+                <button type="submit">
+                    Enviar
+                </button>
+            </form>
         </>
     );
 }

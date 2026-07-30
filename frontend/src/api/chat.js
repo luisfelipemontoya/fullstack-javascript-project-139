@@ -12,4 +12,14 @@ const getMessages = (token) => axios.get('/api/v1/messages', {
     },
 }).then((response) => response.data);
 
-export default { getChannels, getMessages, };
+const sendMessage = (token, message) => axios.post(
+    '/api/v1/messages',
+    message,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    },
+).then((response) => response.data);
+
+export default { getChannels, getMessages, sendMessage, };
