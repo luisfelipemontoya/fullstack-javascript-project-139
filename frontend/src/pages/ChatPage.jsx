@@ -31,7 +31,7 @@ function ChatPage() {
             dispatch(addMessage(message));
         };
 
-        socket.on('newMessage', HandleNewmessage);
+        socket.on('newMessage', handleNewMessage);
 
         return () => {
             socket.off('newMessage');
@@ -71,8 +71,6 @@ function ChatPage() {
                     if (!body) {
                         return;
                     }
-
-                    const body = e.target.elements.body.value;
 
                     chatApi.sendMessage(token, {
                         body,
