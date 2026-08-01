@@ -27,10 +27,11 @@ function ChatPage() {
     }, [dispatch, token]);
 
     useEffect(() => {
-        socket.on('newMessage', (message) => {
-            console.log('Socket recibió', message);
+        const handleNewMessage = (message) => {
             dispatch(addMessage(message));
-        });
+        };
+
+        socket.on('newMessage', HandleNewmessage);
 
         return () => {
             socket.off('newMessage');
@@ -64,6 +65,12 @@ function ChatPage() {
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
+
+                    const body = e.target.elements.body.value.trim();
+
+                    if (!body) {
+                        return;
+                    }
 
                     const body = e.target.elements.body.value;
 
