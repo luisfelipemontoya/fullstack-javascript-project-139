@@ -5,6 +5,7 @@ import socket from '../socket';
 import { setChannels } from '../store/slices/channelsSlice';
 import { setMessages, addMessage } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function ChatPage() {
     const token = useSelector((state) => state.auth.token);
     const channels = useSelector((state) => state.channels);
     const messages = useSelector((state) => state.messages);
+    const currentChannelId = useSelector((state) => state.currentChannel);
 
     useEffect(() => {
         chatApi.getChannels(token)
@@ -38,6 +40,11 @@ function ChatPage() {
         };
     }, [dispatch]);
 
+
+    const currentMessages = messages.filter(
+        (message) => message.channelId === currentChannelId,
+    );
+
     return (
         <>
             <h1>Chat</h1>
@@ -46,7 +53,11 @@ function ChatPage() {
 
             <ul>
                 {channels.map((channel) => (
-                    <li key={channel.id}>
+                    <li key={channel.id}
+                        onClick={() => {
+                            dispatch(setCurrentChannel(channel.id))
+                        }}
+                    >
                         {channel.name}
                     </li>
                 ))}
@@ -55,7 +66,7 @@ function ChatPage() {
             <h2>Messages</h2>
 
             <ul>
-                {messages.map((message) => (
+                {currentMessages.map((message) => (
                     <li key={message.id}>
                         <strong>{message.username}:</strong> {message.body}
                     </li>
@@ -74,7 +85,7 @@ function ChatPage() {
 
                     chatApi.sendMessage(token, {
                         body,
-                        channelId: '1',
+                        channelId: currentChannelId,
                     }).then(() => {
                         e.target.reset();
                     });
