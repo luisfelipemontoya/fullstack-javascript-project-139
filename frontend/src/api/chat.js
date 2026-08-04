@@ -22,4 +22,14 @@ const sendMessage = (token, message) => axios.post(
     },
 ).then((response) => response.data);
 
-export default { getChannels, getMessages, sendMessage, };
+const createChannel = (token, channel) => axios.post(
+    '/api/v1/channels',
+    channel,
+ {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    },
+).then((response) => response.data);
+
+export default { getChannels, getMessages, sendMessage, createChannel, };

@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import chatApi from '../api/chat';
 import socket from '../socket';
 
-import { setChannels } from '../store/slices/channelsSlice';
+import { setChannels, addChannel } from '../store/slices/channelsSlice';
 import { setMessages, addMessage } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
+import ChannelForm from '../components/ChannelForm';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -33,10 +34,17 @@ function ChatPage() {
             dispatch(addMessage(message));
         };
 
+        const handleNewChannel = (channel) => {
+            dispatch(addChannel(channel));
+            dispatch(setCurrentChannel(channel.id));
+        };
+
         socket.on('newMessage', handleNewMessage);
+        socket.on('newChannel', handleNewChannel);
 
         return () => {
-            socket.off('newMessage');
+            socket.off('newMessage', handleNewMessage);
+            socket.off('newChannel', handleNewChannel);
         };
     }, [dispatch]);
 
@@ -50,6 +58,8 @@ function ChatPage() {
             <h1>Chat</h1>
 
             <h2>Canales</h2>
+
+            <ChannelForm />
 
             <ul>
                 {channels.map((channel) => (

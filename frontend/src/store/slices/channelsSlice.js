@@ -6,10 +6,14 @@ const channelsSlice = createSlice({
     reducers: {
         setChannels(state, action) {
             return action.payload;
-        }
+        },
+
+        addChannel(state, action) {
+            state.push(action.payload);
+        },
     },
 });
 
-export const { setChannels } = channelsSlice.actions;
+export const { setChannels, addChannel } = channelsSlice.actions;
 
 export default channelsSlice.reducer;
