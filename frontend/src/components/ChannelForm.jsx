@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
+import { useEffect, useRef } from 'react'
 
 const validationSchema = yup.object({
     name: yup
@@ -11,9 +12,15 @@ const validationSchema = yup.object({
         .required('Campo obligatorio')
 })
 
-function ChannelForm() {
+function ChannelForm({ onSuccess }) {
 
     const token = useSelector((state) => state.auth.token);
+
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -24,6 +31,7 @@ function ChannelForm() {
             chatApi.createChannel(token, values)
                 .then(() => {
                     resetForm();
+                    onSuccess();
                 });
         },
     });
@@ -32,6 +40,7 @@ function ChannelForm() {
 
         <form onSubmit={formik.handleSubmit}>
             <input
+                ref={inputRef}
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}

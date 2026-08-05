@@ -1,4 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
+import ChannelForm from './ChannelForm'
 
 function AddChannelModal({ show, onHide }) {
     return (
@@ -10,7 +11,7 @@ function AddChannelModal({ show, onHide }) {
             </Modal.Header>
 
             <Modal.Body>
-                Aquí irá el formulario.
+                <ChannelForm onSuccess={onHide} />
             </Modal.Body>
 
             <Modal.Footer>

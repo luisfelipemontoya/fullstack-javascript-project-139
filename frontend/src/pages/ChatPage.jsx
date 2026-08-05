@@ -72,8 +72,6 @@ function ChatPage() {
                 onHide={() => setShowAddChannelModal(false)}
             />
 
-            <ChannelForm />
-
             <ul>
                 {channels.map((channel) => (
                     <li key={channel.id}
