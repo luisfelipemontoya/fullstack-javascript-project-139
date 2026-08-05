@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import ChannelForm from '../components/ChannelForm';
 import AddChannelModal from '../components/AddChannelModal';
+import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -61,11 +62,11 @@ function ChatPage() {
 
             <h2>Canales</h2>
 
-            <button
+            <Button
                 onClick={() => setShowAddChannelModal(true)}
             >
                 Agregar canal
-            </button>
+            </Button>
 
             <AddChannelModal
                 show={showAddChannelModal}
@@ -73,16 +74,54 @@ function ChatPage() {
             />
 
             <ul>
-                {channels.map((channel) => (
-                    <li key={channel.id}
-                        onClick={() => {
-                            dispatch(setCurrentChannel(channel.id))
-                        }}
-                    >
-                        {channel.name}
-                    </li>
-                ))}
-            </ul>
+                {channels.map((channel) => {
+                    const isActive = channel.id === currentChannelId;
+
+                    return (
+
+                        <li key={channel.id}>
+                            {channel.removable ? (
+                                <Dropdown as={ButtonGroup}>
+                                    <Button
+                                        variant={isActive ? 'secondary' : 'light'}
+                                        onClick={() => dispatch(setCurrentChannel(channel.id))}
+                                    >
+                                        <span className="me-1">#</span>
+                                        {channel.name}
+                                    </Button>
+
+                                    <Dropdown.Toggle
+                                        split
+                                        variant={isActive ? 'secondary' : 'light'}
+                                    >
+                                        <span className="visually-hidden">
+                                            Gestión de canales
+                                        </span>
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item>
+                                            Renombrar
+                                        </Dropdown.Item>
+
+                                        <Dropdown.Item>
+                                            Eliminar
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            ) : (
+                                <Button
+                                    variant={isActive ? 'secondary' : 'light'}
+                                    onClick={() => dispatch(setCurrentChannel(channel.id))}
+                                >
+                                    <span className="me-1">#</span>
+                                    {channel.name}
+                                </Button>
+                            )}
+                        </li>
+                    );
+                })}
+            </ul >
 
             <h2>Messages</h2>
 
