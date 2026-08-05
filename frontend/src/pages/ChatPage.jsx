@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
 import socket from '../socket';
 
@@ -7,6 +7,7 @@ import { setMessages, addMessage } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import ChannelForm from '../components/ChannelForm';
+import AddChannelModal from '../components/AddChannelModal';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function ChatPage() {
     const channels = useSelector((state) => state.channels);
     const messages = useSelector((state) => state.messages);
     const currentChannelId = useSelector((state) => state.currentChannel);
+    const [showAddChannelModal, setShowAddChannelModal] = useState(false);
 
     useEffect(() => {
         chatApi.getChannels(token)
@@ -58,6 +60,17 @@ function ChatPage() {
             <h1>Chat</h1>
 
             <h2>Canales</h2>
+
+            <button
+                onClick={() => setShowAddChannelModal(true)}
+            >
+                Agregar canal
+            </button>
+
+            <AddChannelModal
+                show={showAddChannelModal}
+                onHide={() => setShowAddChannelModal(false)}
+            />
 
             <ChannelForm />
 
