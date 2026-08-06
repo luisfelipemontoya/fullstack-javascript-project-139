@@ -32,4 +32,14 @@ const createChannel = (token, channel) => axios.post(
     },
 ).then((response) => response.data);
 
-export default { getChannels, getMessages, sendMessage, createChannel, };
+const renameChannel = (token, id, channel) => axios.patch(
+    `/api/v1/channels/${id}`,
+    channel,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    },
+).then((response) => response.data);
+
+export default { getChannels, getMessages, sendMessage, createChannel, renameChannel, };

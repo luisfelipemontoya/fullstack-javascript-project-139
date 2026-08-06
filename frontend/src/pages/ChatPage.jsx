@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
 import socket from '../socket';
 
-import { setChannels, addChannel } from '../store/slices/channelsSlice';
+import { setChannels, addChannel, renameChannel } from '../store/slices/channelsSlice';
 import { setMessages, addMessage } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import ChannelForm from '../components/ChannelForm';
 import AddChannelModal from '../components/AddChannelModal';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import RenameChannelModal from '../components/RenameChannelModal';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -18,6 +19,8 @@ function ChatPage() {
     const messages = useSelector((state) => state.messages);
     const currentChannelId = useSelector((state) => state.currentChannel);
     const [showAddChannelModal, setShowAddChannelModal] = useState(false);
+    const [showRenameModal, setShowRenameModal] = useState(false);
+    const [selectedChannel, setSelectedChannel] = useState(null);
 
     useEffect(() => {
         chatApi.getChannels(token)
@@ -42,12 +45,18 @@ function ChatPage() {
             dispatch(setCurrentChannel(channel.id));
         };
 
+        const handleRenameChannel = (channel) => {
+            dispatch(renameChannel(channel));
+        };
+
         socket.on('newMessage', handleNewMessage);
         socket.on('newChannel', handleNewChannel);
+        socket.on('renameChannel', handleRenameChannel);
 
         return () => {
             socket.off('newMessage', handleNewMessage);
             socket.off('newChannel', handleNewChannel);
+            socket.off('renameChannel', handleRenameChannel);
         };
     }, [dispatch]);
 
@@ -71,6 +80,12 @@ function ChatPage() {
             <AddChannelModal
                 show={showAddChannelModal}
                 onHide={() => setShowAddChannelModal(false)}
+            />
+
+            <RenameChannelModal
+                show={showRenameModal}
+                onHide={() => setShowRenameModal(false)}
+                channel={selectedChannel}
             />
 
             <ul>
@@ -100,7 +115,12 @@ function ChatPage() {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item>
+                                        <Dropdown.Item
+                                            onClick={() => {
+                                                setSelectedChannel(channel);
+                                                setShowRenameModal(true)
+                                            }}
+                                        >
                                             Renombrar
                                         </Dropdown.Item>
 
