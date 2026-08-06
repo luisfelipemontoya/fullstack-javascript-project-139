@@ -1,5 +1,6 @@
 import { Modal, Button } from 'react-bootstrap';
 import ChannelForm from './ChannelForm'
+import PropTypes from 'prop-types';
 
 function AddChannelModal({ show, onHide }) {
     return (
@@ -25,5 +26,10 @@ function AddChannelModal({ show, onHide }) {
         </Modal >
     );
 }
+
+AddChannelModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
+};
 
 export default AddChannelModal;

@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const validationSchema = yup.object({
     name: yup
@@ -23,9 +24,11 @@ function RenameChannelModal({ show, onHide, channel }) {
         validationSchema,
         enableReinitialize: true,
         onSubmit: (values) => {
-            chatApi.renameChannel(token, channel.id, {
-                name: values.name,
-            }).then(() => {
+            return chatApi.renameChannel(token, channel.id,
+                {
+                    name: values.name
+                },
+            ).then(() => {
                 onHide();
             });
         },
@@ -70,6 +73,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                     variant="primary"
                     type="submit"
                     onClick={formik.handleSubmit}
+                    disabled={formik.isSubmitting}
                 >
                     Renombrar
                 </Button>
@@ -77,5 +81,15 @@ function RenameChannelModal({ show, onHide, channel }) {
         </Modal>
     );
 }
+
+RenameChannelModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
+    channel: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        removable: PropTypes.bool.isRequired,
+    }).isRequired,
+};
 
 export default RenameChannelModal;

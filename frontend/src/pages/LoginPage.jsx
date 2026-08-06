@@ -30,7 +30,7 @@ function LoginPage() {
 
                             navigate('/');
                         })
-                        .catch((error) => {
+                        .catch(() => {
                             setAuthError(true);
                         })
                         .finally(() => {

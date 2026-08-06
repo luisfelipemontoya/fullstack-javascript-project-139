@@ -6,7 +6,6 @@ import { setChannels, addChannel, renameChannel, removeChannel } from '../store/
 import { setMessages, addMessage, removeChannelMessages } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
-import ChannelForm from '../components/ChannelForm';
 import AddChannelModal from '../components/AddChannelModal';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';

@@ -2,7 +2,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 const validationSchema = yup.object({
     name: yup
@@ -53,13 +54,20 @@ function ChannelForm({ onSuccess }) {
                     {formik.errors.name}
                 </div>
             )}
-            <button type="submit">
+            <button
+                type="submit"
+                disabled={formik.isSubmitting}
+            >
                 Crear
             </button>
         </form>
 
     );
 }
+
+ChannelForm.propTypes = {
+    onSuccess: PropTypes.func.isRequired,
+};
 
 export default ChannelForm;
 
