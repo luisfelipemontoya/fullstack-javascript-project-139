@@ -42,4 +42,13 @@ const renameChannel = (token, id, channel) => axios.patch(
     },
 ).then((response) => response.data);
 
-export default { getChannels, getMessages, sendMessage, createChannel, renameChannel, };
+const deleteChannel = (token, id) => axios.delete(
+    `/api/v1/channels/${id}`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    },
+).then((response) => response.data);
+
+export default { getChannels, getMessages, sendMessage, createChannel, renameChannel, deleteChannel, };

@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
 import socket from '../socket';
 
-import { setChannels, addChannel, renameChannel } from '../store/slices/channelsSlice';
-import { setMessages, addMessage } from '../store/slices/messagesSlice';
+import { setChannels, addChannel, renameChannel, removeChannel } from '../store/slices/channelsSlice';
+import { setMessages, addMessage, removeChannelMessages } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import ChannelForm from '../components/ChannelForm';
 import AddChannelModal from '../components/AddChannelModal';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';
+import RemoveChannelModal from '../components/RemoveChannelModal';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -21,6 +22,8 @@ function ChatPage() {
     const [showAddChannelModal, setShowAddChannelModal] = useState(false);
     const [showRenameModal, setShowRenameModal] = useState(false);
     const [selectedChannel, setSelectedChannel] = useState(null);
+    const [showRemoveModal, setShowRemoveModal] = useState(false);
+    const [channelToRemove, setChannelToRemove] = useState(null);
 
     useEffect(() => {
         chatApi.getChannels(token)
@@ -49,16 +52,27 @@ function ChatPage() {
             dispatch(renameChannel(channel));
         };
 
+        const handleRemoveChannel = (channel) => {
+            dispatch(removeChannel(channel));
+            dispatch(removeChannelMessages(channel));
+
+            if (channel.id === currentChannelId) {
+                dispatch(setCurrentChannel('1'));
+            }
+        };
+
         socket.on('newMessage', handleNewMessage);
         socket.on('newChannel', handleNewChannel);
         socket.on('renameChannel', handleRenameChannel);
+        socket.on('removeChannel', handleRemoveChannel);
 
         return () => {
             socket.off('newMessage', handleNewMessage);
             socket.off('newChannel', handleNewChannel);
             socket.off('renameChannel', handleRenameChannel);
+            socket.off('removeChannel', handleRemoveChannel);
         };
-    }, [dispatch]);
+    }, [dispatch, currentChannelId]);
 
 
     const currentMessages = messages.filter(
@@ -86,6 +100,12 @@ function ChatPage() {
                 show={showRenameModal}
                 onHide={() => setShowRenameModal(false)}
                 channel={selectedChannel}
+            />
+
+            <RemoveChannelModal
+                show={showRemoveModal}
+                onHide={() => setShowRemoveModal(false)}
+                channel={channelToRemove}
             />
 
             <ul>
@@ -124,7 +144,12 @@ function ChatPage() {
                                             Renombrar
                                         </Dropdown.Item>
 
-                                        <Dropdown.Item>
+                                        <Dropdown.Item
+                                            onClick={() => {
+                                                setChannelToRemove(channel);
+                                                setShowRemoveModal(true);
+                                            }}
+                                        >
                                             Eliminar
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
