@@ -4,6 +4,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -15,6 +16,10 @@ function App() {
                         <ChatPage />
                     </ProtectedRoute>)} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route
+                    path="/signup"
+                    element={<SignupPage />}
+                />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
