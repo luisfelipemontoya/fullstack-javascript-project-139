@@ -15,6 +15,10 @@ const validationSchema = yup.object({
 
 function RenameChannelModal({ show, onHide, channel }) {
 
+    if (!channel) {
+        return null;
+    }
+
     const token = useSelector((state) => state.auth.token);
 
     const formik = useFormik({
@@ -89,7 +93,7 @@ RenameChannelModal.propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         removable: PropTypes.bool.isRequired,
-    }).isRequired,
+    }),
 };
 
 export default RenameChannelModal;

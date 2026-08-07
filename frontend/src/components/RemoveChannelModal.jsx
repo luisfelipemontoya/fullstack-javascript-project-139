@@ -6,6 +6,10 @@ import PropTypes from 'prop-types';
 
 function RemoveChannelModal({ show, onHide, channel }) {
 
+    if (!channel) {
+        return null;
+    }
+
     const token = useSelector((state) => state.auth.token);
     const [loading, setLoading] = useState(false);
 
@@ -59,7 +63,7 @@ RemoveChannelModal.propTypes = {
     onHide: PropTypes.func.isRequired,
     channel: PropTypes.shape({
         id: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
 };
 
 export default RemoveChannelModal;

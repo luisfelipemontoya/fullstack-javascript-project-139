@@ -1,5 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store/slices/authSlice';
+import authApi from '../api/auth';
+import { useState } from 'react';
 
 const validationSchema = yup.object({
 	username: yup
@@ -23,6 +28,11 @@ const validationSchema = yup.object({
 });
 
 function SignupPage() {
+
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const [signupError, setSignupError] = useState(false);
+
 	return (
 		<>
 			<h1>Registro</h1>
@@ -34,65 +44,94 @@ function SignupPage() {
 					confirmPassword: '',
 				}}
 				validationSchema={validationSchema}
-				onSubmit={() => { }}
+				onSubmit={(values, { setSubmitting }) => {
+					setSignupError(false);
+					return authApi.signup({
+						username: values.username,
+						password: values.password,
+					})
+						.then((data) => {
+							localStorage.setItem('token', data.token);
+							dispatch(setToken(data.token));
+							navigate('/');
+						})
+						.catch((error) => {
+							if (error.response?.status === 409) {
+								setSignupError(true);
+							}
+						})
+						.finally(() => {
+							setSubmitting(false);
+						});
+				}}
 			>
-				<Form>
-					<div>
-						<label htmlFor="username">
-							Usuario
-						</label>
+				{({ isSubmitting }) => (
+					<Form>
+						<div>
+							<label htmlFor="username">
+								Usuario
+							</label>
 
-						<Field
-							id="username"
-							name="username"
-							type="text"
-						/>
+							<Field
+								id="username"
+								name="username"
+								type="text"
+							/>
 
-						<ErrorMessage
-							name="username"
-							component="div"
-						/>
-					</div>
+							<ErrorMessage
+								name="username"
+								component="div"
+							/>
+						</div>
 
-					<div>
-						<label htmlFor="password">
-							Contraseña
-						</label>
+						<div>
+							<label htmlFor="password">
+								Contraseña
+							</label>
 
-						<Field
-							id="password"
-							name="password"
-							type="password"
-						/>
+							<Field
+								id="password"
+								name="password"
+								type="password"
+							/>
 
-						<ErrorMessage
-							name="password"
-							component="div"
-						/>
-					</div>
+							<ErrorMessage
+								name="password"
+								component="div"
+							/>
+						</div>
 
-					<div>
-						<label htmlFor="confirmPassword">
-							Confirmar contraseña
-						</label>
+						<div>
+							<label htmlFor="confirmPassword">
+								Confirmar contraseña
+							</label>
 
-						<Field
-							id="confirmPassword"
-							name="confirmPassword"
-							type="password"
-						/>
+							<Field
+								id="confirmPassword"
+								name="confirmPassword"
+								type="password"
+							/>
 
-						<ErrorMessage
-							name="confirmPassword"
-							component="div"
-						/>
-					</div>
+							<ErrorMessage
+								name="confirmPassword"
+								component="div"
+							/>
+						</div>
 
-					<button type="submit">
-						Registrarse
-					</button>
-				</Form>
-			</Formik>
+						<button
+							type="submit"
+							disabled={isSubmitting}
+						>
+							Registrarse
+						</button>
+						{signupError && (
+							<div style={{ color: 'red' }}>
+								El usuario ya existe
+							</div>
+						)}
+					</Form>
+				)}
+			</Formik >
 		</>
 	);
 }
