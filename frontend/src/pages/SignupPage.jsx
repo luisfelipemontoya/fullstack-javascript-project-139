@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
 import authApi from '../api/auth';
@@ -129,7 +129,14 @@ function SignupPage() {
 								El usuario ya existe
 							</div>
 						)}
+						<p>
+							¿Ya tienes cuenta?{' '}
+							<Link to="/login">
+								Iniciar sesión
+							</Link>
+						</p>
 					</Form>
+
 				)}
 			</Formik >
 		</>

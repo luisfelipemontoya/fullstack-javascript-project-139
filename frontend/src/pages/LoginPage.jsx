@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import authApi from '../api/auth';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
@@ -65,6 +65,13 @@ function LoginPage() {
                             Usuario o contraseña incorrectos
                         </div>
                     )}
+
+                    <p>
+                        ¿No tienes cuenta?{' '}
+                        <Link to="/signup">
+                            Regístrate
+                        </Link>
+                    </p>
                 </Form>
             </Formik>
         </>

@@ -6,10 +6,12 @@ import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
+import Header from './components/Header';
 
 function App() {
     return (
         <BrowserRouter>
+            <Header />
             <Routes>
                 <Route path="/" element={(
                     <ProtectedRoute>
