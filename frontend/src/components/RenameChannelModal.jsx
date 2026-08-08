@@ -4,22 +4,20 @@ import * as yup from 'yup';
 import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-
-const validationSchema = yup.object({
-    name: yup
-        .string()
-        .min(3)
-        .max(20)
-        .required(),
-});
+import { useTranslation } from 'react-i18next';
 
 function RenameChannelModal({ show, onHide, channel }) {
 
-    if (!channel) {
-        return null;
-    }
-
     const token = useSelector((state) => state.auth.token);
+    const { t } = useTranslation();
+
+    const validationSchema = yup.object({
+        name: yup
+            .string()
+            .min(3, t('validation.min3'))
+            .max(20, t('validation.max20'))
+            .required(t('validation.required')),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -37,6 +35,12 @@ function RenameChannelModal({ show, onHide, channel }) {
             });
         },
     });
+
+
+    if (!channel) {
+        return null;
+    }
+
     return (
         <Modal
             show={show}
@@ -44,7 +48,7 @@ function RenameChannelModal({ show, onHide, channel }) {
         >
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Renombrar canal
+                    {t('chat.renameChannel')}
                 </Modal.Title>
             </Modal.Header>
 
@@ -70,7 +74,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                     variant="secondary"
                     onClick={onHide}
                 >
-                    Cancelar
+                    {t('chat.cancel')}
                 </Button>
 
                 <Button
@@ -79,7 +83,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                     onClick={formik.handleSubmit}
                     disabled={formik.isSubmitting}
                 >
-                    Renombrar
+                    {t('chat.rename')}
                 </Button>
             </Modal.Footer>
         </Modal>

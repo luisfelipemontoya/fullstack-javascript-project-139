@@ -1,41 +1,43 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
 import authApi from '../api/auth';
 import { useState } from 'react';
-
-const validationSchema = yup.object({
-	username: yup
-		.string()
-		.min(3, 'Mínimo 3 caracteres')
-		.max(20, 'Máximo 20 caracteres')
-		.required('Campo obigarorio'),
-
-	password: yup
-		.string()
-		.min(6, 'Mínimo 6 caracteres')
-		.required('Campo obligatorio'),
-
-	confirmPassword: yup
-		.string()
-		.oneOf(
-			[yup.ref('password')],
-			'Las contraseñas deben coincidir',
-		)
-		.required('Campo obligatorio'),
-});
 
 function SignupPage() {
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [signupError, setSignupError] = useState(false);
+	const { t } = useTranslation();
+
+	const validationSchema = yup.object({
+		username: yup
+			.string()
+			.min(3, t('validation.min3'))
+			.max(20, t('validation.max20'))
+			.required(t('validation.required')),
+
+		password: yup
+			.string()
+			.min(6, t('validation.passwordMin'))
+			.required(t('validation.required')),
+
+		confirmPassword: yup
+			.string()
+			.oneOf(
+				[yup.ref('password')],
+				t('validation.passwordMatch'),
+			)
+			.required(t('validation.required')),
+	});
 
 	return (
 		<>
-			<h1>Registro</h1>
+			<h1>{t('auth.signup')}</h1>
 
 			<Formik
 				initialValues={{
@@ -69,7 +71,7 @@ function SignupPage() {
 					<Form>
 						<div>
 							<label htmlFor="username">
-								Usuario
+								{t('auth.username')}
 							</label>
 
 							<Field
@@ -86,7 +88,7 @@ function SignupPage() {
 
 						<div>
 							<label htmlFor="password">
-								Contraseña
+								{t('auth.password')}
 							</label>
 
 							<Field
@@ -103,7 +105,7 @@ function SignupPage() {
 
 						<div>
 							<label htmlFor="confirmPassword">
-								Confirmar contraseña
+								{t('auth.confirmPassword')}
 							</label>
 
 							<Field
@@ -122,17 +124,17 @@ function SignupPage() {
 							type="submit"
 							disabled={isSubmitting}
 						>
-							Registrarse
+							{t('auth.register')}
 						</button>
 						{signupError && (
 							<div style={{ color: 'red' }}>
-								El usuario ya existe
+								{t('auth.userExists')}
 							</div>
 						)}
 						<p>
-							¿Ya tienes cuenta?{' '}
+							{t('auth.haveAccount')}{' '}
 							<Link to="/login">
-								Iniciar sesión
+								{t('auth.login')}
 							</Link>
 						</p>
 					</Form>

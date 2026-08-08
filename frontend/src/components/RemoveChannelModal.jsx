@@ -3,15 +3,17 @@ import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 function RemoveChannelModal({ show, onHide, channel }) {
+
+    const token = useSelector((state) => state.auth.token);
+    const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     if (!channel) {
         return null;
     }
-
-    const token = useSelector((state) => state.auth.token);
-    const [loading, setLoading] = useState(false);
 
     return (
         <Modal
@@ -20,12 +22,12 @@ function RemoveChannelModal({ show, onHide, channel }) {
         >
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Eliminar canal
+                    {t('chat.removeChannel')}
                 </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                ¿Seguro que deseas eliminar este canal?
+                {t('chat.confirmRemove')}
             </Modal.Body>
 
             <Modal.Footer>
@@ -33,7 +35,7 @@ function RemoveChannelModal({ show, onHide, channel }) {
                     variant="secondary"
                     onClick={onHide}
                 >
-                    Cancelar
+                    {t('chat.cancel')}
                 </Button>
 
                 <Button
@@ -51,7 +53,7 @@ function RemoveChannelModal({ show, onHide, channel }) {
                             });
                     }}
                 >
-                    Eliminar
+                    {t('chat.remove')}
                 </Button>
             </Modal.Footer>
         </Modal >

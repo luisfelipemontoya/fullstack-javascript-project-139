@@ -4,20 +4,13 @@ import chatApi from '../api/chat';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-
-const validationSchema = yup.object({
-    name: yup
-        .string()
-        .min(3, 'Mínimo 3 caracteres')
-        .max(20, 'Máximo 20 caracteres')
-        .required('Campo obligatorio')
-})
+import { useTranslation } from 'react-i18next';
 
 function ChannelForm({ onSuccess }) {
 
     const token = useSelector((state) => state.auth.token);
-
     const inputRef = useRef(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -37,6 +30,14 @@ function ChannelForm({ onSuccess }) {
         },
     });
 
+    const validationSchema = yup.object({
+        name: yup
+            .string()
+            .min(3, t('validation.min3'))
+            .max(20, t('validation.max20'))
+            .required(t('validation.required'))
+    })
+
     return (
 
         <form onSubmit={formik.handleSubmit}>
@@ -46,7 +47,7 @@ function ChannelForm({ onSuccess }) {
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                placeholder="Nombre del canal"
+                placeholder={t('chat.channelName')}
 
             />
             {formik.touched.name && formik.errors.name && (
@@ -58,7 +59,7 @@ function ChannelForm({ onSuccess }) {
                 type="submit"
                 disabled={formik.isSubmitting}
             >
-                Crear
+                {t('chat.create')}
             </button>
         </form>
 

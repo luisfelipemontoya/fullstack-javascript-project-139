@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import authApi from '../api/auth';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
@@ -9,10 +10,11 @@ function LoginPage() {
     const navigate = useNavigate();
     const [authError, setAuthError] = useState(false);
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     return (
         <>
-            <h1>Iniciar sesión</h1>
+            <h1>{t('auth.login')}</h1>
 
             <Formik
                 initialValues={{
@@ -40,7 +42,7 @@ function LoginPage() {
             >
                 <Form>
                     <div>
-                        <label htmlFor="username">Usuario</label>
+                        <label htmlFor="username">{t('auth.username')}</label>
                         <Field
                             id="username"
                             name="username"
@@ -49,7 +51,7 @@ function LoginPage() {
                     </div>
 
                     <div>
-                        <label htmlFor="password">Contraseña</label>
+                        <label htmlFor="password">{t('auth.password')}</label>
                         <Field
                             id="password"
                             name="password"
@@ -58,18 +60,18 @@ function LoginPage() {
                     </div>
 
                     <button type="submit">
-                        Entrar
+                        {t('auth.login')}
                     </button>
                     {authError && (
                         <div style={{ color: 'red' }}>
-                            Usuario o contraseña incorrectos
+                            {t('auth.invalidCredentials')}
                         </div>
                     )}
 
                     <p>
-                        ¿No tienes cuenta?{' '}
+                        {t('auth.noAccount')}{' '}
                         <Link to="/signup">
-                            Regístrate
+                            {t('auth.register')}
                         </Link>
                     </p>
                 </Form>

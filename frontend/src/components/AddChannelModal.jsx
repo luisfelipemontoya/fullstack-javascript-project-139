@@ -1,13 +1,15 @@
 import { Modal, Button } from 'react-bootstrap';
 import ChannelForm from './ChannelForm'
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 function AddChannelModal({ show, onHide }) {
+    const { t } = useTranslation();
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Crear canal
+                    {t('chat.createChannel')}
                 </Modal.Title>
             </Modal.Header>
 
@@ -20,7 +22,7 @@ function AddChannelModal({ show, onHide }) {
                     variant="secondary"
                     onClick={onHide}
                 >
-                    Cancelar
+                    {t('chat.cancel')}
                 </Button>
             </Modal.Footer>
         </Modal >

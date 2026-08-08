@@ -10,6 +10,7 @@ import AddChannelModal from '../components/AddChannelModal';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';
 import RemoveChannelModal from '../components/RemoveChannelModal';
+import { useTranslation } from 'react-i18next';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function ChatPage() {
     const [selectedChannel, setSelectedChannel] = useState(null);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [channelToRemove, setChannelToRemove] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         chatApi.getChannels(token)
@@ -80,14 +82,14 @@ function ChatPage() {
 
     return (
         <>
-            <h1>Chat</h1>
+            <h1>{t('chat.title')}</h1>
 
-            <h2>Canales</h2>
+            <h2>{t('chat.channels')}</h2>
 
             <Button
                 onClick={() => setShowAddChannelModal(true)}
             >
-                Agregar canal
+                {t('chat.addChannel')}
             </Button>
 
             <AddChannelModal
@@ -140,7 +142,7 @@ function ChatPage() {
                                                 setShowRenameModal(true)
                                             }}
                                         >
-                                            Renombrar
+                                            {t('chat.channelManagement')}
                                         </Dropdown.Item>
 
                                         <Dropdown.Item
@@ -149,7 +151,7 @@ function ChatPage() {
                                                 setShowRemoveModal(true);
                                             }}
                                         >
-                                            Eliminar
+                                            {t('chat.rename')}
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
@@ -167,7 +169,7 @@ function ChatPage() {
                 })}
             </ul >
 
-            <h2>Messages</h2>
+            <h2>{t('chat.messages')}</h2>
 
             <ul>
                 {currentMessages.map((message) => (
@@ -198,11 +200,11 @@ function ChatPage() {
                 <input
                     type="text"
                     name="body"
-                    placeholder="Escribe un mensaje..."
+                    placeholder={t('chat.messagePlaceholder')}
                 />
 
                 <button type="submit">
-                    Enviar
+                    {t('chat.send')}
                 </button>
             </form>
         </>
