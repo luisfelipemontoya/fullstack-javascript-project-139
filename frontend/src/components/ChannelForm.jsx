@@ -35,6 +35,7 @@ function ChannelForm({ onSuccess }) {
                 .then(() => {
                     resetForm();
                     onSuccess();
+                    toast.success(t('notifications.channelCreated'));
                 })
                 .catch(() => {
                     toast.error(t('notifications.networkError'));

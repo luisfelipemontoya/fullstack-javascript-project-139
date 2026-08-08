@@ -33,6 +33,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                 },
             ).then(() => {
                 onHide();
+		toast.success(t('notifications.channelRenamed'));
             })
                 .catch(() => {
                     toast.error(t('notifications.networkError'));
