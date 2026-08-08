@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
 import socket from '../socket';
@@ -30,14 +31,20 @@ function ChatPage() {
         chatApi.getChannels(token)
             .then((channels) => {
                 dispatch(setChannels(channels));
+            })
+            .catch(() => {
+                toast.error(t('notifications.loadChannelsError'));
             });
 
         chatApi.getMessages(token)
             .then((messages) => {
                 dispatch(setMessages(messages));
+            })
+            .catch(() => {
+                toast.error(t('notifications.loadMessagesError'));
             });
 
-    }, [dispatch, token]);
+    }, [dispatch, token, t]);
 
     useEffect(() => {
         const handleNewMessage = (message) => {

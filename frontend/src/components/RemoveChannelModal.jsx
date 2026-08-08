@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 function RemoveChannelModal({ show, onHide, channel }) {
 
@@ -47,6 +48,9 @@ function RemoveChannelModal({ show, onHide, channel }) {
                         chatApi.deleteChannel(token, channel.id)
                             .then(() => {
                                 onHide();
+                            })
+                            .catch(() => {
+                                toast.error(t('notifications.networkError'));
                             })
                             .finally(() => {
                                 setLoading(false);

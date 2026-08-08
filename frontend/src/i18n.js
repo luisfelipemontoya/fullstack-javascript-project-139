@@ -30,7 +30,7 @@ i18n
                         invalidCredentials: 'Incorrect username or password',
                         noAccount: 'Don\'t have an account?',
                         userExists: 'User already exists',
-                        haveAccount: 'Already have an account?',                    
+                        haveAccount: 'Already have an account?',
                     },
                     validation: {
                         min3: 'Minimum 3 characters',
@@ -54,16 +54,24 @@ i18n
                         createChannel: 'Create channel',
                         cancel: 'Cancel',
                         renameChannel: 'Rename channel',
-                        newChannelName: 'New channel name',                        
+                        newChannelName: 'New channel name',
                         removeChannel: 'Remove channel',
                         confirmRemove: 'Are you sure you want to remove this channel?',
                     },
                     errors: {
                         notFound: '404 - Page not found',
                     },
+			        notifications: {
+                    channelCreated: 'Channel created successfully',
+                    channelRenamed: 'Channel renamed successfully',
+                    channelRemoved: 'Channel removed successfully',
+                    loadChannelsError: 'Failed to load channels',
+                    loadMessagesError: 'Failed to load messages',
+                    networkError: 'Network error',
                 },
             },
         },
-    });
+    }
+});
 
 export default i18n;

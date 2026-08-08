@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 function ChannelForm({ onSuccess }) {
 
@@ -34,6 +35,9 @@ function ChannelForm({ onSuccess }) {
                 .then(() => {
                     resetForm();
                     onSuccess();
+                })
+                .catch(() => {
+                    toast.error(t('notifications.networkError'));
                 });
         },
     });
