@@ -12,6 +12,7 @@ import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';
 import RemoveChannelModal from '../components/RemoveChannelModal';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 function ChatPage() {
     const dispatch = useDispatch();
@@ -196,8 +197,10 @@ function ChatPage() {
                         return;
                     }
 
+                    const filteredBody = leoProfanity.clean(body);
+
                     chatApi.sendMessage(token, {
-                        body,
+                        body: filteredBody,
                         channelId: currentChannelId,
                     }).then(() => {
                         e.target.reset();

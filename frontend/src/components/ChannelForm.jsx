@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 
 function ChannelForm({ onSuccess }) {
 
@@ -31,7 +32,13 @@ function ChannelForm({ onSuccess }) {
         },
         validationSchema,
         onSubmit: (values, { resetForm }) => {
-            chatApi.createChannel(token, values)
+
+            const filteredName = leoProfanity.clean(values.name);
+
+            chatApi.createChannel(token, {
+                ...values,
+                name: filteredName,
+            })
                 .then(() => {
                     resetForm();
                     onSuccess();
