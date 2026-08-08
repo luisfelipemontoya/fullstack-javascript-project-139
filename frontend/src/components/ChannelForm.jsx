@@ -16,6 +16,14 @@ function ChannelForm({ onSuccess }) {
         inputRef.current?.focus();
     }, []);
 
+    const validationSchema = yup.object({
+        name: yup
+            .string()
+            .min(3, t('validation.min3'))
+            .max(20, t('validation.max20'))
+            .required(t('validation.required'))
+    })
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -29,14 +37,6 @@ function ChannelForm({ onSuccess }) {
                 });
         },
     });
-
-    const validationSchema = yup.object({
-        name: yup
-            .string()
-            .min(3, t('validation.min3'))
-            .max(20, t('validation.max20'))
-            .required(t('validation.required'))
-    })
 
     return (
 
