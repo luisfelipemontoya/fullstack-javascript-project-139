@@ -11,7 +11,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-throw new Error('Error de prueba Rollbar producción');
     return (
         <BrowserRouter>
             <ToastContainer />
