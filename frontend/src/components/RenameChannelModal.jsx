@@ -33,7 +33,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                 },
             ).then(() => {
                 onHide();
-		toast.success(t('notifications.channelRenamed'));
+                toast.success(t('notifications.channelRenamed'));
             })
                 .catch(() => {
                     toast.error(t('notifications.networkError'));
@@ -59,7 +59,15 @@ function RenameChannelModal({ show, onHide, channel }) {
 
             <Modal.Body>
                 <form onSubmit={formik.handleSubmit}>
+                    <label
+                        className="visually-hidden"
+                        htmlFor="rename-channel-name"
+                    >
+                        {t('chat.channelName')}
+                    </label>
+
                     <input
+                        id="rename-channel-name"
                         name="name"
                         value={formik.values.name}
                         onChange={formik.handleChange}
