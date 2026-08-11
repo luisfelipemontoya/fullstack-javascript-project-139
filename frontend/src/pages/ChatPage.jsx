@@ -151,7 +151,7 @@ function ChatPage() {
                                                 setShowRenameModal(true)
                                             }}
                                         >
-                                            {t('chat.channelManagement')}
+                                            {t('chat.rename')}
                                         </Dropdown.Item>
 
                                         <Dropdown.Item
@@ -160,7 +160,7 @@ function ChatPage() {
                                                 setShowRemoveModal(true);
                                             }}
                                         >
-                                            {t('chat.rename')}
+                                            {t('chat.remove')}
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
