@@ -96,8 +96,9 @@ function ChatPage() {
 
             <Button
                 onClick={() => setShowAddChannelModal(true)}
+                arial-label={t('chat.addChannel')}
             >
-                {t('chat.addChannel')}
+                +
             </Button>
 
             <AddChannelModal
