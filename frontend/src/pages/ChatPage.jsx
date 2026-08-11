@@ -211,6 +211,7 @@ function ChatPage() {
                     type="text"
                     name="body"
                     placeholder={t('chat.messagePlaceholder')}
+                    aria-label="New message"
                 />
 
                 <button type="submit">
