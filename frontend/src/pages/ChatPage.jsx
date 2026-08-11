@@ -96,7 +96,7 @@ function ChatPage() {
 
             <Button
                 onClick={() => setShowAddChannelModal(true)}
-                arial-label={t('chat.addChannel')}
+                aria-label={t('chat.addChannel')}
             >
                 +
             </Button>
@@ -140,7 +140,7 @@ function ChatPage() {
                                         variant={isActive ? 'secondary' : 'light'}
                                     >
                                         <span className="visually-hidden">
-                                            Gestión de canales
+                                            {t('chat.manageChannel')}
                                         </span>
                                     </Dropdown.Toggle>
 
