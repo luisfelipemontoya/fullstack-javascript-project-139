@@ -53,6 +53,10 @@ function ChannelForm({ onSuccess }) {
     return (
 
         <form onSubmit={formik.handleSubmit}>
+            <label htmlFor="channel-name">
+                {t('chat.channelName')}
+            </label>
+
             <input
                 ref={inputRef}
                 name="name"
