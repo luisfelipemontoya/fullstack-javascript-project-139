@@ -46,6 +46,7 @@ i18n
                         manageChannel: 'Manage channel',
                         rename: 'Rename',
                         remove: 'Remove',
+                        confirm: 'Confirm',
                         messages: 'Messages',
                         messagePlaceholder: 'Write a message...',
                         send: 'Send',

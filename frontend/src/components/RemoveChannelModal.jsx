@@ -48,7 +48,7 @@ function RemoveChannelModal({ show, onHide, channel }) {
                         chatApi.deleteChannel(token, channel.id)
                             .then(() => {
                                 onHide();
-				toast.success(t('notifications.channelRemoved'));
+                                toast.success(t('notifications.channelRemoved'));
                             })
                             .catch(() => {
                                 toast.error(t('notifications.networkError'));
@@ -58,7 +58,7 @@ function RemoveChannelModal({ show, onHide, channel }) {
                             });
                     }}
                 >
-                    {t('chat.remove')}
+                    {t('chat.confirm')}
                 </Button>
             </Modal.Footer>
         </Modal >
