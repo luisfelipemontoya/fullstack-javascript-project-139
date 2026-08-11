@@ -62,9 +62,9 @@ i18n
                         notFound: '404 - Page not found',
                     },
 			        notifications: {
-                    channelCreated: 'Channel created successfully',
-                    channelRenamed: 'Channel renamed successfully',
-                    channelRemoved: 'Channel removed successfully',
+                    channelCreated: 'Channel created',
+                    channelRenamed: 'Channel renamed',
+                    channelRemoved: 'Channel removed',
                     loadChannelsError: 'Failed to load channels',
                     loadMessagesError: 'Failed to load messages',
                     networkError: 'Network error',
