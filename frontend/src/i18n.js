@@ -22,7 +22,7 @@ i18n
                         login: 'Log in',
                         signup: 'Sign up',
                         logout: 'Log out',
-                        username: 'Your nickname',
+                        username: 'Username',
                         password: 'Password',
                         confirmPassword: 'Confirm password',
                         submit: 'Submit',
