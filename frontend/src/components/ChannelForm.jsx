@@ -53,12 +53,10 @@ function ChannelForm({ onSuccess }) {
     return (
 
         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="channel-name">
-                {t('chat.channelName')}
-            </label>
 
             <input
                 ref={inputRef}
+                id="channel-name"
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
@@ -66,6 +64,14 @@ function ChannelForm({ onSuccess }) {
                 placeholder={t('chat.channelName')}
 
             />
+
+            <label
+                className="visually-hidden"
+                htmlFor="channel-name"
+            >
+                {t('chat.channelName')}
+            </label>
+
             {formik.touched.name && formik.errors.name && (
                 <div>
                     {formik.errors.name}
