@@ -71,7 +71,7 @@ function LoginPage() {
                     <p>
                         {t('auth.noAccount')}{' '}
                         <Link to="/signup">
-                            {t('auth.register')}
+                            {t('auth.signup')}
                         </Link>
                     </p>
                 </Form>
