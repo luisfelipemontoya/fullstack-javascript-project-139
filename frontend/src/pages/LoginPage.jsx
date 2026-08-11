@@ -42,7 +42,7 @@ function LoginPage() {
             >
                 <Form>
                     <div>
-                        <label htmlFor="username">{t('auth.username')}</label>
+                        <label htmlFor="username">{t('auth.nickname')}</label>
                         <Field
                             id="username"
                             name="username"
