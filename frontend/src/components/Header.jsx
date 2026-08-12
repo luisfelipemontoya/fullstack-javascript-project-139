@@ -21,18 +21,25 @@ function Header() {
     };
 
     return (
-        <header>
-            <Link to="/">
-                {t('app.title')}
-            </Link>
-
-            {token && (
-                <button
-                    onClick={handleLogout}
+        <header className="app-header">
+            <div className="header-container">
+                <Link
+                    to="/"
+                    className="header-brand"
                 >
-                    {t('auth.logout')}
-                </button>
-            )}
+                    {t('app.title')}
+                </Link>
+
+                {token && (
+                    <button
+                        type="button"
+                        className="logout-button"
+                        onClick={handleLogout}
+                    >
+                        {t('auth.logout')}
+                    </button>
+                )}
+            </div>
         </header>
     );
 }
