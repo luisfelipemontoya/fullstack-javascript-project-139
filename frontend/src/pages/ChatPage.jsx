@@ -89,17 +89,6 @@ function ChatPage() {
 
     return (
         <>
-            <h1>{t('chat.title')}</h1>
-
-            <h2>{t('chat.channels')}</h2>
-
-            <Button
-                onClick={() => setShowAddChannelModal(true)}
-                aria-label={t('chat.addChannel')}
-            >
-                +
-            </Button>
-
             <AddChannelModal
                 show={showAddChannelModal}
                 onHide={() => setShowAddChannelModal(false)}
@@ -117,108 +106,143 @@ function ChatPage() {
                 channel={channelToRemove}
             />
 
-            <ul>
-                {channels.map((channel) => {
-                    const isActive = channel.id === currentChannelId;
+            <main className="chat-page">
+                <div className="chat-container">
 
-                    return (
+                    <aside className="channels-sidebar">
+                        <div className="channels-header">
 
-                        <li key={channel.id}>
-                            {channel.removable ? (
-                                <Dropdown as={ButtonGroup}>
-                                    <Button
-                                        variant={isActive ? 'secondary' : 'light'}
-                                        onClick={() => dispatch(setCurrentChannel(channel.id))}
+                            <Button
+                                onClick={() => setShowAddChannelModal(true)}
+                                aria-label={t('chat.addChannel')}
+                            >
+                                +
+                            </Button>
+                        </div>
+
+                        <ul className="channels-list">
+                            {channels.map((channel) => {
+                                const isActive = channel.id === currentChannelId;
+
+                                return (
+
+                                    <li
+                                        key={channel.id}
+                                        className="channel-item"
+
                                     >
-                                        <span className="me-1">#</span>
-                                        {channel.name}
-                                    </Button>
+                                        {channel.removable ? (
+                                            <Dropdown as={ButtonGroup}>
+                                                <Button
+                                                    variant={isActive ? 'secondary' : 'light'}
+                                                    onClick={() => dispatch(setCurrentChannel(channel.id))}
+                                                >
+                                                    <span className="me-1">#</span>
+                                                    {channel.name}
+                                                </Button>
 
-                                    <Dropdown.Toggle
-                                        split
-                                        variant={isActive ? 'secondary' : 'light'}
+                                                <Dropdown.Toggle
+                                                    split
+                                                    variant={isActive ? 'secondary' : 'light'}
+                                                >
+                                                    <span className="visually-hidden">
+                                                        {t('chat.manageChannel')}
+                                                    </span>
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            setSelectedChannel(channel);
+                                                            setShowRenameModal(true)
+                                                        }}
+                                                    >
+                                                        {t('chat.rename')}
+                                                    </Dropdown.Item>
+
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            setChannelToRemove(channel);
+                                                            setShowRemoveModal(true);
+                                                        }}
+                                                    >
+                                                        {t('chat.remove')}
+                                                    </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        ) : (
+                                            <Button
+                                                variant={isActive ? 'secondary' : 'light'}
+                                                onClick={() => dispatch(setCurrentChannel(channel.id))}
+                                            >
+                                                <span className="me-1">#</span>
+                                                {channel.name}
+                                            </Button>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </aside>
+
+                    <section className="chat-main">
+                        <div className="chat-header">
+                            <h1>{t('chat.title')}</h1>
+                        </div>
+
+                        <div className="messages-container">
+                            <ul className="messages-list">
+                                {currentMessages.map((message) => (
+                                    <li
+                                        key={message.id}
+                                        className="message-item"
                                     >
-                                        <span className="visually-hidden">
-                                            {t('chat.manageChannel')}
-                                        </span>
-                                    </Dropdown.Toggle>
+                                        <strong>{message.username}:</strong> {message.body}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item
-                                            onClick={() => {
-                                                setSelectedChannel(channel);
-                                                setShowRenameModal(true)
-                                            }}
-                                        >
-                                            {t('chat.rename')}
-                                        </Dropdown.Item>
+                        <form
+                            className="message-form"
+                            onSubmit={(e) => {
+                                e.preventDefault();
 
-                                        <Dropdown.Item
-                                            onClick={() => {
-                                                setChannelToRemove(channel);
-                                                setShowRemoveModal(true);
-                                            }}
-                                        >
-                                            {t('chat.remove')}
-                                        </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            ) : (
-                                <Button
-                                    variant={isActive ? 'secondary' : 'light'}
-                                    onClick={() => dispatch(setCurrentChannel(channel.id))}
-                                >
-                                    <span className="me-1">#</span>
-                                    {channel.name}
-                                </Button>
-                            )}
-                        </li>
-                    );
-                })}
-            </ul >
+                                const body = e.target.elements.body.value.trim();
 
-            <h2>{t('chat.messages')}</h2>
+                                if (!body) {
+                                    return;
+                                }
 
-            <ul>
-                {currentMessages.map((message) => (
-                    <li key={message.id}>
-                        <strong>{message.username}:</strong> {message.body}
-                    </li>
-                ))}
-            </ul>
+                                const filteredBody = leoProfanity.clean(body);
 
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
+                                chatApi.sendMessage(token, {
+                                    body: filteredBody,
+                                    channelId: currentChannelId,
+                                    username,
+                                }).then(() => {
+                                    e.target.reset();
+                                });
+                            }}
+                        >
+                            <input
+                                type="text"
+                                name="body"
+                                placeholder={t('chat.messagePlaceholder')}
+                                aria-label="New message"
+                                className="message-input"
+                            />
 
-                    const body = e.target.elements.body.value.trim();
-
-                    if (!body) {
-                        return;
-                    }
-
-                    const filteredBody = leoProfanity.clean(body);
-
-                    chatApi.sendMessage(token, {
-                        body: filteredBody,
-                        channelId: currentChannelId,
-                        username,
-                    }).then(() => {
-                        e.target.reset();
-                    });
-                }}
-            >
-                <input
-                    type="text"
-                    name="body"
-                    placeholder={t('chat.messagePlaceholder')}
-                    aria-label="New message"
-                />
-
-                <button type="submit">
-                    {t('chat.send')}
-                </button>
-            </form>
+                            <button
+                                type="submit"
+                                className="send-button"
+                            >
+                                {t('chat.send')}
+                            </button>
+                        </form>
+                    </section>
+                </div>
+            </main >
         </>
     );
 }
