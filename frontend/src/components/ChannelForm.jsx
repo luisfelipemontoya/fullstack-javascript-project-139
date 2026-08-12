@@ -45,8 +45,9 @@ function ChannelForm({ onSuccess }) {
                     dispatch(setCurrentChannel(channel.id));
 
                     resetForm();
-                    onSuccess();
                     toast.success(t('notifications.channelCreated'));
+                    onSuccess();
+
                 })
                 .catch(() => {
                     toast.error(t('notifications.networkError'));
