@@ -55,7 +55,6 @@ function ChatPage() {
 
         const handleNewChannel = (channel) => {
             dispatch(addChannel(channel));
-            dispatch(setCurrentChannel(channel.id));
         };
 
         const handleRenameChannel = (channel) => {

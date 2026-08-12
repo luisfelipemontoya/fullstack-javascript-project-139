@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +12,7 @@ import leoProfanity from 'leo-profanity';
 function ChannelForm({ onSuccess }) {
 
     const token = useSelector((state) => state.auth.token);
+    const dispatch = useDispatch();
     const inputRef = useRef(null);
     const { t } = useTranslation();
 
@@ -40,6 +42,8 @@ function ChannelForm({ onSuccess }) {
                 name: filteredName,
             })
                 .then(() => {
+                    dispatch(setCurrentChannel(channel.id));
+
                     resetForm();
                     onSuccess();
                     toast.success(t('notifications.channelCreated'));
