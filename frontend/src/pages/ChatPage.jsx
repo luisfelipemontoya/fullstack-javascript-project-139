@@ -111,6 +111,7 @@ function ChatPage() {
 
                     <aside className="channels-sidebar">
                         <div className="channels-header">
+                            <h2>{t('chat.channels')}</h2>
 
                             <Button
                                 onClick={() => setShowAddChannelModal(true)}
