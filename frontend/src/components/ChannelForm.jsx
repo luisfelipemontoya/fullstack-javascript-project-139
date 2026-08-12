@@ -41,7 +41,7 @@ function ChannelForm({ onSuccess }) {
                 ...values,
                 name: filteredName,
             })
-                .then(() => {
+                .then((channel) => {
                     dispatch(setCurrentChannel(channel.id));
 
                     resetForm();
