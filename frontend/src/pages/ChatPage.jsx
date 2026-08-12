@@ -18,6 +18,7 @@ function ChatPage() {
     const dispatch = useDispatch();
 
     const token = useSelector((state) => state.auth.token);
+    const username = useSelector((state) => state.auth.username);
     const channels = useSelector((state) => state.channels);
     const messages = useSelector((state) => state.messages);
     const currentChannelId = useSelector((state) => state.currentChannel);
@@ -82,7 +83,6 @@ function ChatPage() {
             socket.off('removeChannel', handleRemoveChannel);
         };
     }, [dispatch, currentChannelId]);
-
 
     const currentMessages = messages.filter(
         (message) => message.channelId === currentChannelId,
@@ -203,6 +203,7 @@ function ChatPage() {
                     chatApi.sendMessage(token, {
                         body: filteredBody,
                         channelId: currentChannelId,
+                        username,
                     }).then(() => {
                         e.target.reset();
                     });

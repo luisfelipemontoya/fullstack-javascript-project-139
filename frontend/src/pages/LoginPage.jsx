@@ -28,7 +28,10 @@ function LoginPage() {
                         .then((data) => {
                             localStorage.setItem('token', data.token);
 
-                            dispatch(setToken(data.token));
+                            dispatch(setToken({
+                                token: data.token,
+                                username: values.username,
+                            }));
 
                             navigate('/');
                         })
@@ -75,7 +78,7 @@ function LoginPage() {
                         </Link>
                     </p>
                 </Form>
-            </Formik>
+            </Formik >
         </>
 
     );

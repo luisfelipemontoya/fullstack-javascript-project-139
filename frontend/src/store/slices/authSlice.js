@@ -4,13 +4,16 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         token: localStorage.getItem('token'),
+        username: null,
     },
     reducers: {
         setToken(state, action) {
-            state.token = action.payload;
+            state.token = action.payload.token;
+            state.username = action.payload.username;
         },
         removeToken(state) {
             state.token = null;
+            state.username = null;
         },
     },
 });

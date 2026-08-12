@@ -54,7 +54,11 @@ function SignupPage() {
 					})
 						.then((data) => {
 							localStorage.setItem('token', data.token);
-							dispatch(setToken(data.token));
+
+							dispatch(setToken({
+								token: data.token,
+								username: values.username,
+							}));
 							navigate('/');
 						})
 						.catch((error) => {
@@ -124,7 +128,7 @@ function SignupPage() {
 							type="submit"
 							disabled={isSubmitting}
 						>
-							{t('auth.register')}
+							{t('auth.signup')}
 						</button>
 						{signupError && (
 							<div style={{ color: 'red' }}>
