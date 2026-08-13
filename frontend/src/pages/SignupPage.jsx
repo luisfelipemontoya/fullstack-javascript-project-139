@@ -87,6 +87,7 @@ function SignupPage() {
 										name="username"
 										type="text"
 										className="form-control"
+										autoComplete="username"
 									/>
 
 									<ErrorMessage
@@ -106,6 +107,7 @@ function SignupPage() {
 										name="password"
 										type="password"
 										className="form-control"
+										autoComplete="new-password"
 									/>
 
 									<ErrorMessage
@@ -115,7 +117,7 @@ function SignupPage() {
 									/>
 								</div>
 
-								<div>
+								<div className="form-group">
 									<label htmlFor="confirmPassword">
 										{t('auth.confirmPassword')}
 									</label>
@@ -125,6 +127,7 @@ function SignupPage() {
 										name="confirmPassword"
 										type="password"
 										className="form-control"
+										autoComplete="new-password"
 									/>
 
 									<ErrorMessage

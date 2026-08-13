@@ -47,50 +47,55 @@ function LoginPage() {
                                 });
                         }}
                     >
-                        <Form className="auth-form">
-                            <div className="form-group">
-                                <label htmlFor="username">
-                                    {t('auth.nickname')}
-                                </label>
-                                <Field
-                                    id="username"
-                                    name="username"
-                                    type="text"
-                                    className="form-control"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="password">
-                                    {t('auth.password')}
-                                </label>
-                                <Field
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    className="form-control"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="auth-submit-button"
-                            >
-                                {t('auth.login')}
-                            </button>
-                            {authError && (
-                                <div className="auth-error">
-                                    {t('auth.invalidCredentials')}
+                        {({ isSubmitting }) => (
+                            <Form className="auth-form">
+                                <div className="form-group">
+                                    <label htmlFor="username">
+                                        {t('auth.nickname')}
+                                    </label>
+                                    <Field
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        className="form-control"
+                                        autoComplete="username"
+                                    />
                                 </div>
-                            )}
 
-                            <p className="auth-footer">
-                                {t('auth.noAccount')}{' '}
-                                <Link to="/signup">
-                                    {t('auth.signup')}
-                                </Link>
-                            </p>
-                        </Form>
+                                <div className="form-group">
+                                    <label htmlFor="password">
+                                        {t('auth.password')}
+                                    </label>
+                                    <Field
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        className="form-control"
+                                        autoComplete="current-password"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="auth-submit-button"
+                                    disabled={isSubmitting}
+                                >
+                                    {t('auth.login')}
+                                </button>
+                                {authError && (
+                                    <div className="auth-error">
+                                        {t('auth.invalidCredentials')}
+                                    </div>
+                                )}
+
+                                <p className="auth-footer">
+                                    {t('auth.noAccount')}{' '}
+                                    <Link to="/signup">
+                                        {t('auth.signup')}
+                                    </Link>
+                                </p>
+                            </Form>
+                        )}
                     </Formik >
                 </div>
             </div>
