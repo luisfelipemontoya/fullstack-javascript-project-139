@@ -13,73 +13,88 @@ function LoginPage() {
     const { t } = useTranslation();
 
     return (
-        <>
-            <h1>{t('auth.login')}</h1>
-
-            <Formik
-                initialValues={{
-                    username: '',
-                    password: '',
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setAuthError(false);
-
-                    authApi.login(values)
-                        .then((data) => {
-                            localStorage.setItem('token', data.token);
-
-                            dispatch(setToken({
-                                token: data.token,
-                                username: values.username,
-                            }));
-
-                            navigate('/');
-                        })
-                        .catch(() => {
-                            setAuthError(true);
-                        })
-                        .finally(() => {
-                            setSubmitting(false);
-                        });
-                }}
-            >
-                <Form>
-                    <div>
-                        <label htmlFor="username">{t('auth.nickname')}</label>
-                        <Field
-                            id="username"
-                            name="username"
-                            type="text"
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="password">{t('auth.password')}</label>
-                        <Field
-                            id="password"
-                            name="password"
-                            type="password"
-                        />
-                    </div>
-
-                    <button type="submit">
+        <main className="auth-page">
+            <div className="auth-container">
+                <div className="auth-card">
+                    <h1 className="auth-title">
                         {t('auth.login')}
-                    </button>
-                    {authError && (
-                        <div style={{ color: 'red' }}>
-                            {t('auth.invalidCredentials')}
-                        </div>
-                    )}
+                    </h1>
 
-                    <p>
-                        {t('auth.noAccount')}{' '}
-                        <Link to="/signup">
-                            {t('auth.signup')}
-                        </Link>
-                    </p>
-                </Form>
-            </Formik >
-        </>
+                    <Formik
+                        initialValues={{
+                            username: '',
+                            password: '',
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            setAuthError(false);
+
+                            authApi.login(values)
+                                .then((data) => {
+                                    localStorage.setItem('token', data.token);
+
+                                    dispatch(setToken({
+                                        token: data.token,
+                                        username: values.username,
+                                    }));
+
+                                    navigate('/');
+                                })
+                                .catch(() => {
+                                    setAuthError(true);
+                                })
+                                .finally(() => {
+                                    setSubmitting(false);
+                                });
+                        }}
+                    >
+                        <Form className="auth-form">
+                            <div className="form-group">
+                                <label htmlFor="username">
+                                    {t('auth.nickname')}
+                                </label>
+                                <Field
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    className="form-control"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="password">
+                                    {t('auth.password')}
+                                </label>
+                                <Field
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    className="form-control"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="auth-submit-button"
+                            >
+                                {t('auth.login')}
+                            </button>
+                            {authError && (
+                                <div className="auth-error">
+                                    {t('auth.invalidCredentials')}
+                                </div>
+                            )}
+
+                            <p className="auth-footer">
+                                {t('auth.noAccount')}{' '}
+                                <Link to="/signup">
+                                    {t('auth.signup')}
+                                </Link>
+                            </p>
+                        </Form>
+                    </Formik >
+                </div>
+            </div>
+        </main>
 
     );
 }
