@@ -36,116 +36,129 @@ function SignupPage() {
 	});
 
 	return (
-		<>
-			<h1>{t('auth.signup')}</h1>
+		<main className="auth-page">
+			<div className="auth-container">
+				<div className="auth-card">
+					<h1 className="auth-title">
+						{t('auth.signup')}
+					</h1>
 
-			<Formik
-				initialValues={{
-					username: '',
-					password: '',
-					confirmPassword: '',
-				}}
-				validationSchema={validationSchema}
-				onSubmit={(values, { setSubmitting }) => {
-					setSignupError(false);
-					return authApi.signup({
-						username: values.username,
-						password: values.password,
-					})
-						.then((data) => {
-							localStorage.setItem('token', data.token);
-
-							dispatch(setToken({
-								token: data.token,
+					<Formik
+						initialValues={{
+							username: '',
+							password: '',
+							confirmPassword: '',
+						}}
+						validationSchema={validationSchema}
+						onSubmit={(values, { setSubmitting }) => {
+							setSignupError(false);
+							return authApi.signup({
 								username: values.username,
-							}));
-							navigate('/');
-						})
-						.catch((error) => {
-							if (error.response?.status === 409) {
-								setSignupError(true);
-							}
-						})
-						.finally(() => {
-							setSubmitting(false);
-						});
-				}}
-			>
-				{({ isSubmitting }) => (
-					<Form>
-						<div>
-							<label htmlFor="username">
-								{t('auth.username')}
-							</label>
+								password: values.password,
+							})
+								.then((data) => {
+									localStorage.setItem('token', data.token);
 
-							<Field
-								id="username"
-								name="username"
-								type="text"
-							/>
+									dispatch(setToken({
+										token: data.token,
+										username: values.username,
+									}));
+									navigate('/');
+								})
+								.catch((error) => {
+									if (error.response?.status === 409) {
+										setSignupError(true);
+									}
+								})
+								.finally(() => {
+									setSubmitting(false);
+								});
+						}}
+					>
+						{({ isSubmitting }) => (
+							<Form className="auth-form">
+								<div className="form-group">
+									<label htmlFor="username">
+										{t('auth.username')}
+									</label>
 
-							<ErrorMessage
-								name="username"
-								component="div"
-							/>
-						</div>
+									<Field
+										id="username"
+										name="username"
+										type="text"
+										className="form-control"
+									/>
 
-						<div>
-							<label htmlFor="password">
-								{t('auth.password')}
-							</label>
+									<ErrorMessage
+										name="username"
+										component="div"
+										className="validation-error"
+									/>
+								</div>
 
-							<Field
-								id="password"
-								name="password"
-								type="password"
-							/>
+								<div className="form-group">
+									<label htmlFor="password">
+										{t('auth.password')}
+									</label>
 
-							<ErrorMessage
-								name="password"
-								component="div"
-							/>
-						</div>
+									<Field
+										id="password"
+										name="password"
+										type="password"
+										className="form-control"
+									/>
 
-						<div>
-							<label htmlFor="confirmPassword">
-								{t('auth.confirmPassword')}
-							</label>
+									<ErrorMessage
+										name="password"
+										component="div"
+										className="validation-error"
+									/>
+								</div>
 
-							<Field
-								id="confirmPassword"
-								name="confirmPassword"
-								type="password"
-							/>
+								<div>
+									<label htmlFor="confirmPassword">
+										{t('auth.confirmPassword')}
+									</label>
 
-							<ErrorMessage
-								name="confirmPassword"
-								component="div"
-							/>
-						</div>
+									<Field
+										id="confirmPassword"
+										name="confirmPassword"
+										type="password"
+										className="form-control"
+									/>
 
-						<button
-							type="submit"
-							disabled={isSubmitting}
-						>
-							{t('auth.signup')}
-						</button>
-						{signupError && (
-							<div style={{ color: 'red' }}>
-								{t('auth.userExists')}
-							</div>
+									<ErrorMessage
+										name="confirmPassword"
+										component="div"
+										className="validation-error"
+									/>
+								</div>
+
+								<button
+									type="submit"
+									disabled={isSubmitting}
+									className="auth-submit-button"
+								>
+									{t('auth.signup')}
+								</button>
+								{signupError && (
+									<div className="auth-error">
+										{t('auth.userExists')}
+									</div>
+								)}
+								<p className="auth-footer">
+									{t('auth.haveAccount')}{' '}
+									<Link to="/login">
+										{t('auth.login')}
+									</Link>
+								</p>
+							</Form>
+
 						)}
-						<p>
-							{t('auth.haveAccount')}{' '}
-							<Link to="/login">
-								{t('auth.login')}
-							</Link>
-						</p>
-					</Form>
-
-				)}
-			</Formik >
-		</>
+					</Formik>
+				</div>
+			</div>
+		</main>
 	);
 }
 
