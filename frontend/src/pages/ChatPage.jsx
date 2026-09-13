@@ -70,16 +70,16 @@ function ChatPage() {
             }
         };
 
-        socket.on('newMessage', handleNewMessage);
-        socket.on('newChannel', handleNewChannel);
-        socket.on('renameChannel', handleRenameChannel);
-        socket.on('removeChannel', handleRemoveChannel);
+        socket.subscribe('newMessage', handleNewMessage);
+        socket.subscribe('newChannel', handleNewChannel);
+        socket.subscribe('renameChannel', handleRenameChannel);
+        socket.subscribe('removeChannel', handleRemoveChannel);
 
         return () => {
-            socket.off('newMessage', handleNewMessage);
-            socket.off('newChannel', handleNewChannel);
-            socket.off('renameChannel', handleRenameChannel);
-            socket.off('removeChannel', handleRemoveChannel);
+            socket.unsubscribe('newMessage', handleNewMessage);
+            socket.unsubscribe('newChannel', handleNewChannel);
+            socket.unsubscribe('renameChannel', handleRenameChannel);
+            socket.unsubscribe('removeChannel', handleRemoveChannel);
         };
     }, [dispatch, currentChannelId]);
 

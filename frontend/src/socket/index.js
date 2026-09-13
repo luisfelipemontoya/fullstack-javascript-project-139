@@ -3,4 +3,15 @@ import { io } from 'socket.io-client';
 
 const socket = io();
 
-export default socket;
+const subscribe = (event, callback) => {
+    socket.on(event, callback);
+};
+
+const unsubscribe = (event, callback) => {
+    socket.off(event, callback);
+};
+
+export default  {
+    subscribe,
+    unsubscribe,
+};
