@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import authApi from '../api/auth';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
+import storage from '../api/storage';
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ function LoginPage() {
 
                             authApi.login(values)
                                 .then((data) => {
-                                    localStorage.setItem('token', data.token);
+                                    storage.setToken(data.token);
 
                                     dispatch(setToken({
                                         token: data.token,

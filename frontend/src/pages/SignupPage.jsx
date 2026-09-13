@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
 import authApi from '../api/auth';
 import { useState } from 'react';
+import storage from '../api/storage';
 
 function SignupPage() {
 
@@ -57,7 +58,7 @@ function SignupPage() {
 								password: values.password,
 							})
 								.then((data) => {
-									localStorage.setItem('token', data.token);
+									storage.setToken(data.token);
 
 									dispatch(setToken({
 										token: data.token,
