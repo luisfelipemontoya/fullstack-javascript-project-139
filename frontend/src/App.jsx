@@ -1,5 +1,5 @@
 import './App.css';
-import './socket/index.js';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './routes/ProtectedRoute';
 
@@ -11,7 +11,7 @@ import Header from './components/Header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+function App({ socket }) {
     return (
         <BrowserRouter>
             <ToastContainer />
@@ -19,7 +19,7 @@ function App() {
             <Routes>
                 <Route path="/" element={(
                     <ProtectedRoute>
-                        <ChatPage />
+                        <ChatPage socket={socket} />
                     </ProtectedRoute>)} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route
@@ -31,5 +31,12 @@ function App() {
         </BrowserRouter>
     );
 }
+
+App.propTypes = {
+    socket: PropTypes.shape({
+        subscribe: PropTypes.func.isRequired,
+        unsubscribe: PropTypes.func.isRequired,
+    }).isRequired,
+};
 
 export default App;

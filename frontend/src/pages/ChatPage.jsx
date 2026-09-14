@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
-import socket from '../socket';
 
 import { setChannels, addChannel, renameChannel, removeChannel } from '../store/slices/channelsSlice';
 import { setMessages, addMessage, removeChannelMessages } from '../store/slices/messagesSlice';
@@ -14,7 +14,7 @@ import RemoveChannelModal from '../components/RemoveChannelModal';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 
-function ChatPage() {
+function ChatPage({ socket }) {
     const dispatch = useDispatch();
 
     const token = useSelector((state) => state.auth.token);
@@ -81,7 +81,7 @@ function ChatPage() {
             socket.unsubscribe('renameChannel', handleRenameChannel);
             socket.unsubscribe('removeChannel', handleRemoveChannel);
         };
-    }, [dispatch, currentChannelId]);
+    }, [dispatch, currentChannelId, socket]);
 
     const currentMessages = messages.filter(
         (message) => message.channelId === currentChannelId,
@@ -247,5 +247,12 @@ function ChatPage() {
         </>
     );
 }
+
+ChatPage.propTypes = {
+    socket: PropTypes.shape({
+        subscribe: PropTypes.func.isRequired,
+        unsubscribe: PropTypes.func.isRequired,
+    }).isRequired,
+};
 
 export default ChatPage;
