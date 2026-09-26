@@ -157,6 +157,7 @@ function ChatPage({ socket }) {
 
                                                 <Dropdown.Menu>
                                                     <Dropdown.Item
+                                                        role="menuitem"
                                                         onClick={() => {
                                                             setSelectedChannel(channel);
                                                             setShowRenameModal(true)
@@ -166,6 +167,7 @@ function ChatPage({ socket }) {
                                                     </Dropdown.Item>
 
                                                     <Dropdown.Item
+                                                        role="menuitem"
                                                         onClick={() => {
                                                             setChannelToRemove(channel);
                                                             setShowRemoveModal(true);
