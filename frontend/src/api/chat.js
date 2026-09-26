@@ -1,19 +1,20 @@
 import axios from 'axios';
+import routes from './routes';
 
-const getChannels = (token) => axios.get('/api/v1/channels', {
+const getChannels = (token) => axios.get(routes.channels(), {
     headers: {
         Authorization: `Bearer ${token}`,
     },
 }).then((response) => response.data);
 
-const getMessages = (token) => axios.get('/api/v1/messages', {
+const getMessages = (token) => axios.get(routes.messages(), {
     headers: {
         Authorization: `Bearer ${token}`,
     },
 }).then((response) => response.data);
 
 const sendMessage = (token, message) => axios.post(
-    '/api/v1/messages',
+    routes.messages(),
     message,
     {
         headers: {
@@ -23,9 +24,9 @@ const sendMessage = (token, message) => axios.post(
 ).then((response) => response.data);
 
 const createChannel = (token, channel) => axios.post(
-    '/api/v1/channels',
+    routes.channels(),
     channel,
- {
+    {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -33,7 +34,7 @@ const createChannel = (token, channel) => axios.post(
 ).then((response) => response.data);
 
 const renameChannel = (token, id, channel) => axios.patch(
-    `/api/v1/channels/${id}`,
+    routes.channel(id),
     channel,
     {
         headers: {
@@ -43,7 +44,7 @@ const renameChannel = (token, id, channel) => axios.patch(
 ).then((response) => response.data);
 
 const deleteChannel = (token, id) => axios.delete(
-    `/api/v1/channels/${id}`,
+    routes.channel(id),
     {
         headers: {
             Authorization: `Bearer ${token}`,
