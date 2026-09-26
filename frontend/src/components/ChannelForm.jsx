@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentChannel } from '../store/slices/currentChannelSlice';
+import { setCurrentChannel } from '../store/slices/channelsSlice';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';

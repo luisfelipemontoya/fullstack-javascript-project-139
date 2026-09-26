@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import chatApi from '../api/chat';
 
-import { setChannels, addChannel, renameChannel, removeChannel } from '../store/slices/channelsSlice';
+import { setChannels, addChannel, renameChannel, removeChannel, setCurrentChannel, } from '../store/slices/channelsSlice';
 import { setMessages, addMessage, removeChannelMessages } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import AddChannelModal from '../components/AddChannelModal';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';
@@ -19,14 +18,15 @@ function ChatPage({ socket }) {
 
     const token = useSelector((state) => state.auth.token);
     const username = useSelector((state) => state.auth.username);
-    const channels = useSelector((state) => state.channels);
+    const channels = useSelector((state) => state.channels.items);
     const messages = useSelector((state) => state.messages);
-    const currentChannelId = useSelector((state) => state.currentChannel);
+    const currentChannelId = useSelector((state) => state.channels.currentChannelId,);
     const [showAddChannelModal, setShowAddChannelModal] = useState(false);
     const [showRenameModal, setShowRenameModal] = useState(false);
     const [selectedChannel, setSelectedChannel] = useState(null);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [channelToRemove, setChannelToRemove] = useState(null);
+    const [isSending, setIsSending] = useState(false);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -64,10 +64,6 @@ function ChatPage({ socket }) {
         const handleRemoveChannel = (channel) => {
             dispatch(removeChannel(channel));
             dispatch(removeChannelMessages(channel));
-
-            if (channel.id === currentChannelId) {
-                dispatch(setCurrentChannel('1'));
-            }
         };
 
         socket.subscribe('newMessage', handleNewMessage);
@@ -81,7 +77,7 @@ function ChatPage({ socket }) {
             socket.unsubscribe('renameChannel', handleRenameChannel);
             socket.unsubscribe('removeChannel', handleRemoveChannel);
         };
-    }, [dispatch, currentChannelId, socket]);
+    }, [dispatch, socket]);
 
     const currentMessages = messages.filter(
         (message) => message.channelId === currentChannelId,
@@ -212,24 +208,31 @@ function ChatPage({ socket }) {
 
                         <form
                             className="message-form"
-                            onSubmit={(e) => {
+                            onSubmit={async (e) => {
                                 e.preventDefault();
 
-                                const body = e.target.elements.body.value.trim();
+                                if (isSending) return;
 
-                                if (!body) {
-                                    return;
+                                const form = e.currentTarget;
+                                const body = form.elements.body.value.trim();
+
+                                if (!body) return;
+
+                                setIsSending(true);
+
+                                try {
+                                    await chatApi.sendMessage(token, {
+                                        body: leoProfanity.clean(body),
+                                        channelId: currentChannelId,
+                                        username,
+                                    });
+
+                                    form.reset();
+                                } catch {
+                                    toast.error(t('notifications.networkError'));
+                                } finally {
+                                    setIsSending(false);
                                 }
-
-                                const filteredBody = leoProfanity.clean(body);
-
-                                chatApi.sendMessage(token, {
-                                    body: filteredBody,
-                                    channelId: currentChannelId,
-                                    username,
-                                }).then(() => {
-                                    e.target.reset();
-                                });
                             }}
                         >
                             <input
@@ -238,11 +241,13 @@ function ChatPage({ socket }) {
                                 placeholder={t('chat.messagePlaceholder')}
                                 aria-label="New message"
                                 className="message-input"
+                                disabled={isSending}
                             />
 
                             <button
                                 type="submit"
                                 className="send-button"
+                                disabled={isSending}
                             >
                                 {t('chat.send')}
                             </button>
