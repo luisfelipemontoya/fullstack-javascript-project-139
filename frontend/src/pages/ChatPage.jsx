@@ -87,6 +87,10 @@ function ChatPage({ socket }) {
         (message) => message.channelId === currentChannelId,
     );
 
+    const currentChannel = channels.find(
+        (channel) => channel.id === currentChannelId,
+    );
+
     return (
         <>
             <AddChannelModal
@@ -115,7 +119,7 @@ function ChatPage({ socket }) {
 
                             <Button
                                 onClick={() => setShowAddChannelModal(true)}
-                                aria-label={t('chat.addChannel')}
+                                title={t('chat.addChannel')}
                             >
                                 +
                             </Button>
@@ -188,7 +192,7 @@ function ChatPage({ socket }) {
 
                     <section className="chat-main">
                         <div className="chat-header">
-                            <h1>{t('chat.title')}</h1>
+                            <h1>{currentChannel ? `# ${currentChannel.name}` : t('chat.title')}</h1>
                         </div>
 
                         <div className="messages-container">

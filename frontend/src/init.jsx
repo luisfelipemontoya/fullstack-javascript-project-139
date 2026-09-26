@@ -7,11 +7,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 import App from './App.jsx'
-import store from './store/index.js';
+import createAppStore from './store/index.js';
 import rollbarConfig from './rollbar.js';
 import createSocketApi from './socket/index.js';
 
 const init = async (socket) => {
+    const store = createAppStore();
     const socketApi = createSocketApi(socket);
 
     return (

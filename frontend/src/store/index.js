@@ -4,7 +4,7 @@ import channelsReducer from './slices/channelsSlice';
 import messagesReducer from './slices/messagesSlice';
 import currentChannelReducer from './slices/currentChannelSlice';
 
-const store = configureStore({
+const createAppStore = () => configureStore({
     reducer: {
         auth: authReducer,
         channels: channelsReducer,
@@ -13,4 +13,4 @@ const store = configureStore({
     },
 });
 
-export default store;
+export default createAppStore;
