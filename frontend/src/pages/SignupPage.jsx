@@ -143,7 +143,7 @@ function SignupPage() {
 									disabled={isSubmitting}
 									className="auth-submit-button"
 								>
-									{t('auth.signup')}
+									{t('auth.submit')}
 								</button>
 								{signupError && (
 									<div className="auth-error">

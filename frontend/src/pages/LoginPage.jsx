@@ -81,7 +81,7 @@ function LoginPage() {
                                     className="auth-submit-button"
                                     disabled={isSubmitting}
                                 >
-                                    {t('auth.login')}
+                                    {t('auth.submit')}
                                 </button>
                                 {authError && (
                                     <div className="auth-error">
