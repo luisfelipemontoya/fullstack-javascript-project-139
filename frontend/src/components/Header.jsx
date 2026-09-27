@@ -31,7 +31,7 @@ function Header() {
                 {token && (
                     <Button
                         type="button"
-                        className="logout-button"
+                        variant="outline-light"
                         onClick={handleLogout}
                     >
                         {t('auth.logout')}
