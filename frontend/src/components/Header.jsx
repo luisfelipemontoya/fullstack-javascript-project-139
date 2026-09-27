@@ -1,3 +1,4 @@
+import { Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../store/slices/authSlice';
@@ -21,26 +22,23 @@ function Header() {
     };
 
     return (
-        <header className="app-header">
-            <div className="header-container">
-                <Link
-                    to="/"
-                    className="header-brand"
-                >
+        <Navbar bg="dark" variant="dark" className="shadow-sm">
+            <Container fluid>
+                <Navbar.Brand as={Link} to="/">
                     {t('app.title')}
-                </Link>
+                </Navbar.Brand>
 
                 {token && (
-                    <button
+                    <Button
                         type="button"
                         className="logout-button"
                         onClick={handleLogout}
                     >
                         {t('auth.logout')}
-                    </button>
+                    </Button>
                 )}
-            </div>
-        </header>
+            </Container>
+        </Navbar>
     );
 }
 

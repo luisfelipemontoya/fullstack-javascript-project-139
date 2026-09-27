@@ -7,7 +7,10 @@ import { setChannels, addChannel, renameChannel, removeChannel, setCurrentChanne
 import { setMessages, addMessage, removeChannelMessages } from '../store/slices/messagesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AddChannelModal from '../components/AddChannelModal';
-import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import {
+    Button, Dropdown, ButtonGroup, Form as BootstrapForm,
+    InputGroup
+} from 'react-bootstrap';
 import RenameChannelModal from '../components/RenameChannelModal';
 import RemoveChannelModal from '../components/RemoveChannelModal';
 import { useTranslation } from 'react-i18next';
@@ -235,22 +238,23 @@ function ChatPage({ socket }) {
                                 }
                             }}
                         >
-                            <input
-                                type="text"
-                                name="body"
-                                placeholder={t('chat.messagePlaceholder')}
-                                aria-label="New message"
-                                className="message-input"
-                                disabled={isSending}
-                            />
+                            <InputGroup>
+                                <BootstrapForm.Control
+                                    type="text"
+                                    name="body"
+                                    placeholder={t('chat.messagePlaceholder')}
+                                    aria-label="New message"
+                                    disabled={isSending}
+                                />
 
-                            <button
-                                type="submit"
-                                className="send-button"
-                                disabled={isSending}
-                            >
-                                {t('chat.send')}
-                            </button>
+                                <Button
+                                    type="submit"
+                                    variant="primary"
+                                    disabled={isSending}
+                                >
+                                    {t('chat.send')}
+                                </Button>
+                            </InputGroup>
                         </form>
                     </section>
                 </div>
