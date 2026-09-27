@@ -1,3 +1,4 @@
+import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
@@ -55,39 +56,40 @@ function LoginPage() {
                     >
                         {({ isSubmitting }) => (
                             <Form className="auth-form">
-                                <div className="form-group">
-                                    <label htmlFor="username">
+                                <BootstrapForm.Group controlId="username" className="mb-3">
+                                    <BootstrapForm.Label>
                                         {t('auth.nickname')}
-                                    </label>
+                                    </BootstrapForm.Label>
                                     <Field
-                                        id="username"
+                                        as={BootstrapForm.Control}
                                         name="username"
                                         type="text"
-                                        className="form-control"
                                         autoComplete="username"
+                                        disabled={isSubmitting}
                                     />
-                                </div>
+                                </BootstrapForm.Group>
 
-                                <div className="form-group">
-                                    <label htmlFor="password">
+                                <BootstrapForm.Group controlId="password" className="mb-3">
+                                    <BootstrapForm.Label>
                                         {t('auth.password')}
-                                    </label>
+                                    </BootstrapForm.Label>
                                     <Field
-                                        id="password"
+                                        as={BootstrapForm.Control}
                                         name="password"
                                         type="password"
-                                        className="form-control"
                                         autoComplete="current-password"
+                                        disabled={isSubmitting}
                                     />
-                                </div>
+                                </BootstrapForm.Group>
 
-                                <button
+                                <Button
                                     type="submit"
-                                    className="auth-submit-button"
+                                    variant="primary"
+                                    className="w-100"
                                     disabled={isSubmitting}
                                 >
                                     {t('auth.submit')}
-                                </button>
+                                </Button>
                                 {authError && (
                                     <div className="auth-error">
                                         {t('auth.invalidCredentials')}

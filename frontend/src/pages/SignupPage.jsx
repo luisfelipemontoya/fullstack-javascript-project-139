@@ -1,3 +1,4 @@
+import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -81,73 +82,72 @@ function SignupPage() {
 					>
 						{({ isSubmitting }) => (
 							<Form className="auth-form">
-								<div className="form-group">
-									<label htmlFor="username">
+								<BootstrapForm.Group controlId="username" className="mb-3">
+									<BootstrapForm.Label>
 										{t('auth.username')}
-									</label>
-
+									</BootstrapForm.Label>
 									<Field
-										id="username"
+										as={BootstrapForm.Control}
 										name="username"
 										type="text"
-										className="form-control"
 										autoComplete="username"
+										disabled={isSubmitting}
 									/>
 
 									<ErrorMessage
 										name="username"
 										component="div"
-										className="validation-error"
+										className="text-danger"
 									/>
-								</div>
-
-								<div className="form-group">
-									<label htmlFor="password">
+								</BootstrapForm.Group>
+								<BootstrapForm.Group controlId="password" className="mb-3">
+									<BootstrapForm.Label>
 										{t('auth.password')}
-									</label>
+									</BootstrapForm.Label>
 
 									<Field
-										id="password"
+										as={BootstrapForm.Control}
 										name="password"
 										type="password"
-										className="form-control"
 										autoComplete="new-password"
+										disabled={isSubmitting}
 									/>
 
 									<ErrorMessage
 										name="password"
 										component="div"
-										className="validation-error"
+										className="text-danger"
 									/>
-								</div>
+								</BootstrapForm.Group>
 
-								<div className="form-group">
-									<label htmlFor="confirmPassword">
+								<BootstrapForm.Group controlId="confirmPassword" className="mb-3">
+									<BootstrapForm.Label>
 										{t('auth.confirmPassword')}
-									</label>
+									</BootstrapForm.Label>
 
 									<Field
-										id="confirmPassword"
+										as={BootstrapForm.Control}
 										name="confirmPassword"
 										type="password"
-										className="form-control"
+										disabled={isSubmitting}
 										autoComplete="new-password"
 									/>
 
 									<ErrorMessage
 										name="confirmPassword"
 										component="div"
-										className="validation-error"
+										className="text-danger"
 									/>
-								</div>
+								</BootstrapForm.Group>
 
-								<button
+								<Button
 									type="submit"
+									variant="primary"
+									className="w-100"
 									disabled={isSubmitting}
-									className="auth-submit-button"
 								>
 									{t('auth.submit')}
-								</button>
+								</Button>
 								{signupError && (
 									<div className="auth-error">
 										{t('auth.userExists')}
