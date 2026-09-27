@@ -1,4 +1,4 @@
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
@@ -58,28 +58,36 @@ function RenameChannelModal({ show, onHide, channel }) {
             </Modal.Header>
 
             <Modal.Body>
-                <form onSubmit={formik.handleSubmit}>
-                    <label
-                        className="visually-hidden"
-                        htmlFor="rename-channel-name"
+                <BootstrapForm
+                    id="rename-channel-form"
+                    onSubmit={formik.handleSubmit}
+                >
+                    <BootstrapForm.Group
+                        controlId="rename-channel-name"
+                        className="mb-3"
                     >
-                        {t('chat.channelName')}
-                    </label>
+                        <BootstrapForm.Label>
+                            {t('chat.channelName')}
+                        </BootstrapForm.Label>
 
-                    <input
-                        id="rename-channel-name"
-                        name="name"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
+                        <BootstrapForm.Control
+                            autoFocus
+                            name="name"
+                            type="text"
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            disabled={formik.isSubmitting}
+                            isInvalid={Boolean(
+                                formik.touched.name && formik.errors.name
+                            )}
+                        />
 
-                    {formik.touched.name && formik.errors.name && (
-                        <div>
+                        <BootstrapForm.Control.Feedback type="invalid">
                             {formik.errors.name}
-                        </div>
-                    )}
-                </form>
+                        </BootstrapForm.Control.Feedback>
+                    </BootstrapForm.Group>
+                </BootstrapForm>
             </Modal.Body>
 
             <Modal.Footer>
@@ -93,7 +101,7 @@ function RenameChannelModal({ show, onHide, channel }) {
                 <Button
                     variant="primary"
                     type="submit"
-                    onClick={formik.handleSubmit}
+                    form="rename-channel-form"
                     disabled={formik.isSubmitting}
                 >
                     {t('chat.rename')}

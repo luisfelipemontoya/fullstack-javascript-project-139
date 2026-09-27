@@ -1,3 +1,4 @@
+import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import chatApi from '../api/chat';
@@ -57,37 +58,39 @@ function ChannelForm({ onSuccess }) {
 
     return (
 
-        <form onSubmit={formik.handleSubmit}>
-            <label
-                className="visually-hidden"
-                htmlFor="channel-name"
-            >
-                {t('chat.channelName')}
-            </label>
+        <BootstrapForm onSubmit={formik.handleSubmit}>
+            <BootstrapForm.Group controlId="channel-name" className="mb-3">
+                <BootstrapForm.Label>
+                    {t('chat.channelName')}
+                </BootstrapForm.Label>
 
-            <input
-                ref={inputRef}
-                id="channel-name"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder={t('chat.channelName')}
-                disabled={formik.isSubmitting}
-            />
+                <BootstrapForm.Control
+                    ref={inputRef}
+                    name="name"
+                    type="text"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder={t('chat.channelName')}
+                    disabled={formik.isSubmitting}
+                    isInvalid={Boolean(
+                        formik.touched.name && formik.errors.name
+                    )}
+                />
 
-            {formik.touched.name && formik.errors.name && (
-                <div>
+                <BootstrapForm.Control.Feedback type="invalid">
                     {formik.errors.name}
-                </div>
-            )}
-            <button
+                </BootstrapForm.Control.Feedback>
+            </BootstrapForm.Group>
+
+            <Button
                 type="submit"
+                variant="primary"
                 disabled={formik.isSubmitting}
             >
                 {t('chat.create')}
-            </button>
-        </form>
+            </Button>
+        </BootstrapForm>
 
     );
 }
