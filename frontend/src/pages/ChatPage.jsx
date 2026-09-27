@@ -209,8 +209,8 @@ function ChatPage({ socket }) {
                             </ul>
                         </div>
 
-                        <form
-                            className="message-form"
+                        <BootstrapForm
+                            className="p-3 border-top"
                             onSubmit={async (e) => {
                                 e.preventDefault();
 
@@ -255,7 +255,7 @@ function ChatPage({ socket }) {
                                     {t('chat.send')}
                                 </Button>
                             </InputGroup>
-                        </form>
+                        </BootstrapForm>
                     </section>
                 </div>
             </main >
