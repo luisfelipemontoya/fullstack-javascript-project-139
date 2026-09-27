@@ -37,7 +37,7 @@ function ChannelForm({ onSuccess }) {
 
             const filteredName = leoProfanity.clean(values.name);
 
-            chatApi.createChannel(token, {
+            return chatApi.createChannel(token, {
                 ...values,
                 name: filteredName,
             })
@@ -73,6 +73,7 @@ function ChannelForm({ onSuccess }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder={t('chat.channelName')}
+                disabled={formik.isSubmitting}
             />
 
             {formik.touched.name && formik.errors.name && (

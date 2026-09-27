@@ -6,6 +6,7 @@ import authApi from '../api/auth';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../store/slices/authSlice';
 import storage from '../api/storage';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ function LoginPage() {
                         onSubmit={(values, { setSubmitting }) => {
                             setAuthError(false);
 
-                            authApi.login(values)
+                            return authApi.login(values)
                                 .then((data) => {
                                     storage.setToken(data.token);
 
@@ -40,8 +41,12 @@ function LoginPage() {
 
                                     navigate('/');
                                 })
-                                .catch(() => {
-                                    setAuthError(true);
+                                .catch((error) => {
+                                    if (error.response?.status === 401) {
+                                        setAuthError(true);
+                                    } else {
+                                        toast.error(t('notifications.networkError'));
+                                    }
                                 })
                                 .finally(() => {
                                     setSubmitting(false);

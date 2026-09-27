@@ -7,6 +7,7 @@ import { setToken } from '../store/slices/authSlice';
 import authApi from '../api/auth';
 import { useState } from 'react';
 import storage from '../api/storage';
+import { toast } from 'react-toastify';
 
 function SignupPage() {
 
@@ -69,6 +70,8 @@ function SignupPage() {
 								.catch((error) => {
 									if (error.response?.status === 409) {
 										setSignupError(true);
+									} else {
+										toast.error(t('notifications.networkError'));
 									}
 								})
 								.finally(() => {
